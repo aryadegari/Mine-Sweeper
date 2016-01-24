@@ -5,6 +5,8 @@ import ui.GameLevel;
 import ui.SettingsData;
 import ui.SettingsManager;
 
+import java.util.Random;
+
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;

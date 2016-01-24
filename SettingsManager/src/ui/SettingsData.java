@@ -2,25 +2,47 @@ package ui;
 
 import core.LanguagesController;
 
+import java.util.prefs.Preferences;
+
 /**
  * Created by hp on 09/12/2015.
  */
 public class SettingsData {
 
+    private static final String LANGUAGE_KEY = "language_key";
+    private static final String SOUND_KEY = "sound_key";
+    private static final String GAME_LEVEL_KEY = "game_level_key";
+    private static final String THEME_KEY = "theme_key";
+
     public Language language = Language.En;
     public boolean sound = false;
-    public GameLevel gameLevel = GameLevel.beginner();
+    public GameLevel.LevelName gameLevel = GameLevel.LevelName.Beginner;
     public Theme theme = Theme.Modern;
     private LanguagesController languagesController;
 
     public SettingsData() {
     }
 
-    public SettingsData(Language language, boolean sound, GameLevel gameLevel, Theme theme) {
+    public SettingsData(Language language, boolean sound, GameLevel.LevelName gameLevel, Theme theme) {
         this.language = language;
         this.sound = sound;
         this.gameLevel = gameLevel;
         this.theme = theme;
+    }
+
+    private static Preferences getPreferences() {
+        return Preferences.userRoot().node(SettingsData.class.getName());
+    }
+
+    public static SettingsData load() {
+        SettingsData settings = new SettingsData();
+        Preferences prefs = getPreferences();
+        settings.language = Language.values()[prefs.getInt(LANGUAGE_KEY, settings.language.ordinal())];
+        settings.sound = prefs.getBoolean(SOUND_KEY, settings.sound);
+        settings.gameLevel = GameLevel.LevelName.values()[prefs.getInt(GAME_LEVEL_KEY, settings.gameLevel.ordinal())];
+        settings.language = Language.values()[prefs.getInt(LANGUAGE_KEY, settings.language.ordinal())];
+
+        return settings;
     }
 
     public LanguagesController getLanguagesController() {
@@ -28,6 +50,14 @@ public class SettingsData {
             languagesController = new LanguagesController(language);
         }
         return languagesController;
+    }
+
+    public void save() {
+        Preferences prefs = getPreferences();
+        prefs.putInt(LANGUAGE_KEY, language.ordinal());
+        prefs.putBoolean(SOUND_KEY, sound);
+        prefs.putInt(GAME_LEVEL_KEY, gameLevel.ordinal());
+        prefs.putInt(THEME_KEY, theme.ordinal());
     }
 
     @Override
@@ -41,6 +71,16 @@ public class SettingsData {
         if (language != that.language) return false;
         if (!gameLevel.equals(that.gameLevel)) return false;
         return theme == that.theme;
+    }
+
+    @Override
+    public String toString() {
+        return "SettingsData{" +
+                "language=" + language +
+                ", sound=" + sound +
+                ", gameLevel=" + gameLevel +
+                ", theme=" + theme +
+                '}';
     }
 
     public enum Language {En, Fa}

@@ -51,10 +51,10 @@ public class SettingsManagerTest {
         assertNotNull(loadedSettings.language);
         assertNotNull(loadedSettings.theme);
 
-        GameLevel gameLevel = new GameLevel(loadedSettings.gameLevel);
+        GameLevel gameLevel = new GameLevel(loadedSettings.gameLevel.level);
 
-        assertTrue(gameLevel.cols > 0);
-        assertTrue(gameLevel.rows > 0);
-        assertTrue(gameLevel.mines > 0);
+        assertTrue(gameLevel.level.cols > 0);
+        assertTrue(gameLevel.level.rows > 0);
+        assertTrue(gameLevel.level.mines > 0);
     }
 }

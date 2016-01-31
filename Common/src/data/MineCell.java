@@ -5,8 +5,9 @@ package data;
  */
 public class MineCell extends CellBase {
 
-    @Override
-    public void open() {
-
-    }
+//    @Override
+//    public void open(CellOpener opener) {
+//        setState(CellState.OPEN);
+//        opener.open(this);
+//    }
 }

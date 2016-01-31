@@ -5,10 +5,18 @@ package data;
  */
 public class NumCell extends CellBase {
 
-    public int num;
+    int neighbourMines = 0;
 
-    @Override
-    public void open() {
-
+    public void increaseNeighbourMines() {
+        neighbourMines++;
     }
+
+    public int getNeighbourMines() {
+        return neighbourMines;
+    }
+//    @Override
+//    public void open(CellOpener opener) {
+//        setState(CellState.OPEN);
+//        opener.open(this);
+//    }
 }

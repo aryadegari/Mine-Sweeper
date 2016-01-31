@@ -7,8 +7,33 @@ import java.util.ArrayList;
  */
 public abstract class CellBase {
 
-    public ArrayList<CellBase> relatedCells;
-    public CellState state;
+    ArrayList<CellBase> relatedCells;
+    CellState state = CellState.CLOSE;
 
-    abstract public void open();
+
+    public void addRelatedCell(CellBase cell) {
+        relatedCells.add(cell);
+    }
+
+    public ArrayList<CellBase> getRelatedCell() {
+        return relatedCells;
+    }
+//    abstract public void open(CellOpener opener);
+
+    public void open() {
+        for (CellBase relatedCell : getRelatedCell())
+            relatedCell.open();
+    }
+
+    public void mark() {
+        setState(CellState.MARKED);
+    }
+
+    public CellState getState() {
+        return state;
+    }
+
+    public void setState(CellState state) {
+        this.state = state;
+    }
 }

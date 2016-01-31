@@ -1,5 +1,6 @@
 package ui;
 
+import com.google.gson.Gson;
 import core.LanguagesController;
 
 import java.util.prefs.Preferences;
@@ -16,14 +17,14 @@ public class SettingsData {
 
     public Language language = Language.En;
     public boolean sound = false;
-    public GameLevel.LevelName gameLevel = GameLevel.LevelName.Beginner;
+    public GameLevel gameLevel = new GameLevel(new BeginnerLevel());
     public Theme theme = Theme.Modern;
     private LanguagesController languagesController;
 
     public SettingsData() {
     }
 
-    public SettingsData(Language language, boolean sound, GameLevel.LevelName gameLevel, Theme theme) {
+    public SettingsData(Language language, boolean sound, GameLevel gameLevel, Theme theme) {
         this.language = language;
         this.sound = sound;
         this.gameLevel = gameLevel;
@@ -39,7 +40,7 @@ public class SettingsData {
         Preferences prefs = getPreferences();
         settings.language = Language.values()[prefs.getInt(LANGUAGE_KEY, settings.language.ordinal())];
         settings.sound = prefs.getBoolean(SOUND_KEY, settings.sound);
-        settings.gameLevel = GameLevel.LevelName.values()[prefs.getInt(GAME_LEVEL_KEY, settings.gameLevel.ordinal())];
+        settings.gameLevel = new Gson().fromJson(prefs.get(GAME_LEVEL_KEY, new Gson().toJson(settings.gameLevel)), GameLevel.class);
         settings.language = Language.values()[prefs.getInt(LANGUAGE_KEY, settings.language.ordinal())];
 
         return settings;
@@ -56,7 +57,7 @@ public class SettingsData {
         Preferences prefs = getPreferences();
         prefs.putInt(LANGUAGE_KEY, language.ordinal());
         prefs.putBoolean(SOUND_KEY, sound);
-        prefs.putInt(GAME_LEVEL_KEY, gameLevel.ordinal());
+        prefs.put(GAME_LEVEL_KEY, new Gson().toJson(gameLevel));
         prefs.putInt(THEME_KEY, theme.ordinal());
     }
 

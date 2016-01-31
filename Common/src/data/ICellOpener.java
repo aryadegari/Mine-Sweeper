@@ -5,6 +5,8 @@ package data;
  */
 public interface ICellOpener {
     public void open(EmptyCell cell);
+
     public void open(MineCell cell);
+
     public void open(NumCell cell);
 }

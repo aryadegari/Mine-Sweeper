@@ -1,11 +1,9 @@
 package test;
 
 import org.junit.Test;
-import ui.GameLevel;
+import data.GameLevel;
 import ui.SettingsData;
 import ui.SettingsManager;
-
-import java.util.Random;
 
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;

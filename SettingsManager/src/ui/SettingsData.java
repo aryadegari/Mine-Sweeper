@@ -2,6 +2,8 @@ package ui;
 
 import com.google.gson.Gson;
 import core.LanguagesController;
+import data.BeginnerLevel;
+import data.GameLevel;
 
 import java.util.prefs.Preferences;
 

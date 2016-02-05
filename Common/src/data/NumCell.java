@@ -7,7 +7,7 @@ public class NumCell extends CellBase {
 
     int neighbourMines = 0;
 
-    public void increaseNeighbourMines() {
+    public void addNeighbourMine() {
         neighbourMines++;
     }
 

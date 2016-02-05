@@ -1,5 +1,6 @@
 package data;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -7,52 +8,93 @@ import java.util.ArrayList;
  */
 public class Board {
 
-    CellBase[][] cells;
-    int rows, cols, mines;
+    ArrayList<ArrayList<CellBase>> cells = new ArrayList<>();
+    int rows = 0, cols = 0, mines = 0;
+    ArrayList<Point> minesPos = new ArrayList<>();
 
-    public Board(int rows, int cols, int mines) {
-        this.rows = rows;
-        this.cols = cols;
-        this.mines = mines;
-        resetCells();
+    public Board(GameLevel gameLevel) {
+        rows = gameLevel.level.rows;
+        cols = gameLevel.level.cols;
+        mines = gameLevel.level.mines;
+        resetBoard();
     }
 
     void init() {
         for (int i = 0; i < mines; i++) {
             int randRow = (int) (Math.random() * rows), randCol = (int) (Math.random() * cols);
-            if (cells[randRow][randCol] instanceof MineCell)
+            if (getCell(randRow, randCol) instanceof MineCell)
                 i--;
             else {
-                cells[randRow][randCol] = new MineCell();
+                minesPos.add(new Point(randRow, randCol));
+                setMine(randRow, randCol);
             }
         }
     }
 
-    public void resetCells() {
-        cells = new EmptyCell[rows][cols];
+    public void resetBoard() {
+        for (int i = 0; i < rows; i++) {
+            cells.add(new ArrayList<CellBase>());
+            for (int j = 0; j < cols; j++) {
+                cells.get(i).add(new EmptyCell());
+            }
+        }
         init();
     }
 
     void setMine(int row, int col) {
-        cells[row][col] = new MineCell();
+        cells.get(row).set(col, new MineCell());
         increaseNeighbourMines(row, col);
     }
 
     void increaseNeighbourMines(int row, int col) {
-        for (CellBase cell : neighbour(row, col)) {
-            if (cell instanceof EmptyCell)
-                cell = new NumCell();
-            ((NumCell) cell).increaseNeighbourMines();
+        for (Point p : neighbours(row, col)) {
+            if (!(getCell(p.x, p.y) instanceof MineCell)) {
+                if (getCell(p.x, p.y) instanceof EmptyCell)
+                    cells.get(p.x).set(p.y, new NumCell());
+                ((NumCell) getCell(p.x, p.y)).addNeighbourMine();
+            }
         }
     }
 
-    ArrayList<CellBase> neighbour(int row, int col) {
-        ArrayList<CellBase> neighbours = new ArrayList<CellBase>();
+    ArrayList<Point> neighbours(int row, int col) {
+        ArrayList<Point> neighbours = new ArrayList<>();
         for (int i = row - 1; i <= row + 1; i++)
             for (int j = col - 1; j <= col + 1; j++)
                 if (!(i == row && j == col))
-                    if (i >= 1 && i <= rows && j >= 1 && j <= rows)
-                        neighbours.add(cells[i][j]);
+                    if (i >= 0 && i < rows && j >= 0 && j < cols)
+                        neighbours.add(new Point(i, j));
         return neighbours;
     }
+
+    public CellBase getCell(int i, int j) {
+        return cells.get(i).get(j);
+    }
+
+    public void openCell(int row, int col) {
+        if (getCell(row, col).getState() == CellState.OPEN)
+            return;
+        getCell(row, col).open();
+        openRelatedCells(row, col);
+    }
+
+    public void markCell(int row, int col) {
+        getCell(row, col).mark();
+    }
+
+    void openRelatedCells(int row, int col) {
+        if (getCell(row, col) instanceof MineCell)
+            for (int k = 0; k < minesPos.size(); k++) {
+                openCell(minesPos.get(k).x, minesPos.get(k).y);
+            }
+        else if (getCell(row, col) instanceof EmptyCell) {
+            for (int k = 0; k < neighbours(row, col).size(); k++) {
+                Point neighbour = neighbours(row, col).get(k);
+                if ((Math.abs(neighbour.x - row) + Math.abs(neighbour.y - col)) < 2)
+                    if (getCell(neighbour.x, neighbour.y) instanceof EmptyCell) {
+                        openCell(neighbour.x, neighbour.y);
+                    }
+            }
+        }
+    }
+
 }

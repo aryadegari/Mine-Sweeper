@@ -18,6 +18,6 @@ public class CommandUndo extends CommandBase {
 
     @Override
     public void execute() {
-        gameState.setGameState((careTaker.undo()).getState());
+        gameState.setGameState((careTaker.undo()).getGameState());
     }
 }

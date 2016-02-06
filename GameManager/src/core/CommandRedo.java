@@ -1,6 +1,5 @@
 package core;
 
-import com.google.gson.Gson;
 import data.GameState;
 
 /**
@@ -18,6 +17,6 @@ public class CommandRedo extends CommandBase {
 
     @Override
     public void execute() {
-        gameState.setGameState(careTaker.redo().getState());
+        gameState.setGameState(careTaker.redo().getGameState());
     }
 }

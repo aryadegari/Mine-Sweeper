@@ -25,7 +25,7 @@ public class LanguageControllerTest {
         for (String word : input) {
             System.out.print("word:'" + word + "' ");
             for (LanguagesController languagesController : languageControllers) {
-                System.out.print(languagesController.getLanguage() + ":'" + word + "' ");
+                System.out.print(languagesController.getLanguage() + ":'" + languagesController.getWord(word) + "' ");
             }
             System.out.println();
         }

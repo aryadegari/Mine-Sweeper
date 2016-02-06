@@ -1,7 +1,9 @@
 package test;
 
 import com.google.gson.Gson;
-import core.*;
+import core.CareTaker;
+import core.CommandOpenCell;
+import core.CommandResetGame;
 import data.*;
 import org.junit.Test;
 

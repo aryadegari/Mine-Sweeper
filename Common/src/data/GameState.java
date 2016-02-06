@@ -1,7 +1,5 @@
 package data;
 
-import com.google.gson.Gson;
-
 /**
  * Created by hp on 09/12/2015.
  */
@@ -16,6 +14,10 @@ public class GameState {
         this.moves = moves;
         this.timeSecs = timeSecs;
 
+    }
+
+    public static GameState getDefault() {
+        return new GameState(new Board(new BeginnerLevel()), 0, 0);
     }
 
     public static GameState fromMemento(GameStateMemento memento) {

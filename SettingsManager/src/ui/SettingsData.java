@@ -12,10 +12,11 @@ import java.util.prefs.Preferences;
  */
 public class SettingsData {
 
-    private static final String LANGUAGE_KEY = "language_key";
-    private static final String SOUND_KEY = "sound_key";
-    private static final String GAME_LEVEL_KEY = "game_level_key";
-    private static final String THEME_KEY = "theme_key";
+    private static final String SETTINGS_PREFIX = "settings_data_";
+    private static final String LANGUAGE_KEY = SETTINGS_PREFIX + "language_key";
+    private static final String SOUND_KEY = SETTINGS_PREFIX + "sound_key";
+    private static final String GAME_LEVEL_KEY = SETTINGS_PREFIX + "game_level_key";
+    private static final String THEME_KEY = SETTINGS_PREFIX + "theme_key";
 
     public Language language = Language.En;
     public boolean sound = false;

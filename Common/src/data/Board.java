@@ -17,6 +17,13 @@ public class Board {
         resetCells();
     }
 
+    public Board(LevelBase levelBase) {
+        this.rows = levelBase.rows;
+        this.cols = levelBase.cols;
+        this.mines = levelBase.mines;
+        resetCells();
+    }
+
     void init() {
         for (int i = 0; i < mines; i++) {
             int randRow = (int) (Math.random() * rows), randCol = (int) (Math.random() * cols);

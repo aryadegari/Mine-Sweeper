@@ -15,19 +15,20 @@ public class AccountInfo {
         this.password = password;
     }
 
-    public void updateStats(boolean win) {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        AccountInfo that = (AccountInfo) o;
+
+        return username != null ? username.equals(that.username) : that.username == null;
     }
 
-    public Statistic getStats() {
-        return null;
-    }
-
-    public GameState loadGameState() {
-        return null;
-    }
-
-    public void resetStats() {
-
+    @Override
+    public String toString() {
+        return "AccountInfo{" +
+                "username='" + username +
+                '}';
     }
 }

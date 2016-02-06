@@ -8,8 +8,8 @@ public class CellOpener implements ICellOpener {
 
     @Override
     public void open(EmptyCell cell) {
-        for (CellBase relatedCell : cell.getRelatedCell())
-            relatedCell.open();
+//        for (CellBase relatedCell : cell.getRelatedCell())
+//            relatedCell.open();
     }
 
     @Override

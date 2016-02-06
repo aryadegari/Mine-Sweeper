@@ -1,5 +1,6 @@
 package data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -7,22 +8,19 @@ import java.util.ArrayList;
  */
 public abstract class CellBase {
 
-    ArrayList<CellBase> relatedCells;
     CellState state = CellState.CLOSE;
 
-
-    public void addRelatedCell(CellBase cell) {
-        relatedCells.add(cell);
+    public CellBase() {
     }
 
-    public ArrayList<CellBase> getRelatedCell() {
-        return relatedCells;
-    }
 //    abstract public void open(CellOpener opener);
 
     public void open() {
-        for (CellBase relatedCell : getRelatedCell())
-            relatedCell.open();
+//        if (state == CellState.OPEN)
+//            return;
+        state = CellState.OPEN;
+//        for (CellBase relatedCell : relatedCells)
+//            relatedCell.open();
     }
 
     public void mark() {

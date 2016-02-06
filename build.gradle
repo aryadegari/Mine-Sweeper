@@ -11,4 +11,5 @@ repositories {
 
 dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
+    compile 'io.gsonfire:gson-fire:1.5.1'
 }

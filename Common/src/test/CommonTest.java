@@ -10,7 +10,7 @@ import org.junit.Test;
 public class CommonTest {
     @Test
     public void gameStateTest() {
-        Board board = new Board(new GameLevel(new IntermediateLevel()));
+        Board board = Board.getInstance(new GameLevel(new IntermediateLevel()));
         System.out.println("INITIALIZED BOARD:");
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {

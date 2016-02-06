@@ -12,7 +12,16 @@ public class Board {
     int rows = 0, cols = 0, mines = 0;
     ArrayList<Point> minesPos = new ArrayList<>();
 
-    public Board(GameLevel gameLevel) {
+    private static Board ourInstance;
+
+    public static Board getInstance(GameLevel gameLevel) {
+        if (ourInstance != null)
+            return ourInstance;
+        ourInstance = new Board(gameLevel);
+        return ourInstance;
+    }
+
+    private Board(GameLevel gameLevel) {
         rows = gameLevel.level.rows;
         cols = gameLevel.level.cols;
         mines = gameLevel.level.mines;
@@ -32,6 +41,7 @@ public class Board {
     }
 
     public void resetBoard() {
+        cells.clear();
         for (int i = 0; i < rows; i++) {
             cells.add(new ArrayList<CellBase>());
             for (int j = 0; j < cols; j++) {

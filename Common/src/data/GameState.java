@@ -5,14 +5,21 @@ package data;
  */
 public class GameState {
 
-    public Board board;
+    Board board;
     int moves = 0;
     int timeSecs = 0;
+
+    public GameState() {
+    }
 
     public GameState(Board board, int moves, int timeSecs) {
         this.board = board;
         this.moves = moves;
         this.timeSecs = timeSecs;
+    }
+
+    public GameState(Board board) {
+        this.board = board;
     }
 
     public static GameState fromMemento(GameStateMemento memento) {
@@ -27,6 +34,10 @@ public class GameState {
         moves = 0;
         timeSecs = 0;
         board.resetBoard();
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     public void increaseMoves() {
@@ -47,5 +58,11 @@ public class GameState {
 
     public int getNumberOfMoves() {
         return moves;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.board = gameState.board;
+        this.moves = gameState.moves;
+        this.timeSecs = gameState.timeSecs;
     }
 }

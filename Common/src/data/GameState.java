@@ -69,4 +69,25 @@ public class GameState {
         this.moves = gameState.moves;
         this.timeSecs = gameState.timeSecs;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GameState gameState = (GameState) o;
+        if (moves != gameState.moves) return false;
+        if (timeSecs != gameState.timeSecs) return false;
+        return board != null ? board.equals(gameState.board) : gameState.board == null;
+
+    }
+
+    @Override
+    public String toString() {
+        return "GameState{" +
+                "board=" + board +
+                ", moves=" + moves +
+                ", timeSecs=" + timeSecs +
+                '}';
+    }
 }

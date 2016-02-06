@@ -26,13 +26,6 @@ public class Board {
         return ourInstance;
     }
 
-//    public Board(LevelBase levelBase) {
-//        this.rows = levelBase.rows;
-//        this.cols = levelBase.cols;
-//        this.mines = levelBase.mines;
-//        resetBoard();
-//    }
-
     private void init() {
         for (int i = 0; i < mines; i++) {
             int randRow = (int) (Math.random() * rows), randCol = (int) (Math.random() * cols);
@@ -112,4 +105,28 @@ public class Board {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Board board = (Board) o;
+        if (rows != board.rows) return false;
+        if (cols != board.cols) return false;
+        if (mines != board.mines) return false;
+        if (cells != null ? !cells.equals(board.cells) : board.cells != null) return false;
+        return minesPos != null ? minesPos.equals(board.minesPos) : board.minesPos == null;
+
+    }
+
+    @Override
+    public String toString() {
+        return "Board{" +
+                "cells=" + cells +
+                ", rows=" + rows +
+                ", cols=" + cols +
+                ", mines=" + mines +
+                ", minesPos=" + minesPos +
+                '}';
+    }
 }

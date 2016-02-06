@@ -164,8 +164,9 @@ public class AccountManager {
         AccountManager.gameState = gameState;
     }
 
-    public void resetStats() {
+    public Statistic resetStats() {
         statistic.reset();
         saveStatistic();
+        return statistic;
     }
 }

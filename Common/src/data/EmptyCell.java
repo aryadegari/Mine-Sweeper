@@ -5,14 +5,8 @@ package data;
  */
 public class EmptyCell extends CellBase {
 
-    String name = EmptyCell.class.getSimpleName();
-
     public EmptyCell() {
-
+        name = EmptyCell.class.getSimpleName();
     }
-//    @Override
-//    public void open(CellOpener opener) {
-//        setState(CellState.OPEN);
-//        opener.open(this);
-//    }
+
 }

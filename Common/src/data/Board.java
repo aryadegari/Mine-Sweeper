@@ -8,18 +8,10 @@ import java.util.ArrayList;
  */
 public class Board {
 
+    private static Board ourInstance;
     ArrayList<ArrayList<CellBase>> cells = new ArrayList<>();
     int rows = 0, cols = 0, mines = 0;
     ArrayList<Point> minesPos = new ArrayList<>();
-
-    private static Board ourInstance;
-
-    public static Board getInstance(GameLevel gameLevel) {
-        if (ourInstance != null)
-            return ourInstance;
-        ourInstance = new Board(gameLevel);
-        return ourInstance;
-    }
 
     private Board(GameLevel gameLevel) {
         rows = gameLevel.level.rows;
@@ -28,14 +20,20 @@ public class Board {
         resetBoard();
     }
 
-    public Board(LevelBase levelBase) {
-        this.rows = levelBase.rows;
-        this.cols = levelBase.cols;
-        this.mines = levelBase.mines;
-        resetCells();
+    public static synchronized Board getInstance(GameLevel gameLevel) {
+        if (ourInstance == null)
+            ourInstance = new Board(gameLevel);
+        return ourInstance;
     }
 
-    void init() {
+//    public Board(LevelBase levelBase) {
+//        this.rows = levelBase.rows;
+//        this.cols = levelBase.cols;
+//        this.mines = levelBase.mines;
+//        resetBoard();
+//    }
+
+    private void init() {
         for (int i = 0; i < mines; i++) {
             int randRow = (int) (Math.random() * rows), randCol = (int) (Math.random() * cols);
             if (getCell(randRow, randCol) instanceof MineCell)
@@ -58,12 +56,12 @@ public class Board {
         init();
     }
 
-    void setMine(int row, int col) {
+    private void setMine(int row, int col) {
         cells.get(row).set(col, new MineCell());
         increaseNeighbourMines(row, col);
     }
 
-    void increaseNeighbourMines(int row, int col) {
+    private void increaseNeighbourMines(int row, int col) {
         for (Point p : neighbours(row, col)) {
             if (!(getCell(p.x, p.y) instanceof MineCell)) {
                 if (getCell(p.x, p.y) instanceof EmptyCell)
@@ -73,7 +71,7 @@ public class Board {
         }
     }
 
-    ArrayList<Point> neighbours(int row, int col) {
+    private ArrayList<Point> neighbours(int row, int col) {
         ArrayList<Point> neighbours = new ArrayList<>();
         for (int i = row - 1; i <= row + 1; i++)
             for (int j = col - 1; j <= col + 1; j++)
@@ -98,7 +96,7 @@ public class Board {
         getCell(row, col).mark();
     }
 
-    void openRelatedCells(int row, int col) {
+    private void openRelatedCells(int row, int col) {
         if (getCell(row, col) instanceof MineCell)
             for (int k = 0; k < minesPos.size(); k++) {
                 openCell(minesPos.get(k).x, minesPos.get(k).y);

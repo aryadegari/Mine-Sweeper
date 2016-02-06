@@ -12,23 +12,31 @@ public class GameStateMemento {
 
     private String state;
 
+    public GameStateMemento(String state) {
+        this.state = state;
+    }
+
     public GameStateMemento(GameState state) {
         this.state = new Gson().toJson(state);
     }
 
-    public GameState getState() {
-        return makeGsonForeCells().fromJson(state, GameState.class);
+    public GameState getGameState() {
+        return makeGsonForCells().fromJson(state, GameState.class);
     }
 
-    private Gson makeGsonForeCells() {
+    public String getState() {
+        return state;
+    }
+
+    private Gson makeGsonForCells() {
         GsonFireBuilder builder = new GsonFireBuilder()
                 .registerTypeSelector(CellBase.class, new TypeSelector<CellBase>() {
                     @Override
                     public Class<? extends CellBase> getClassForElement(JsonElement readElement) {
                         String type = readElement.getAsJsonObject().get("name").getAsString();
-                        if(type.equals(MineCell.class.getSimpleName())){
+                        if (type.equals(MineCell.class.getSimpleName())) {
                             return MineCell.class;
-                        } else if(type.equals(NumCell.class.getSimpleName())) {
+                        } else if (type.equals(NumCell.class.getSimpleName())) {
                             return NumCell.class;
                         } else {
                             return EmptyCell.class; //returning null will trigger Gson's default behavior

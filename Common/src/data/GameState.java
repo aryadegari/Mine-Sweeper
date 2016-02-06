@@ -23,11 +23,11 @@ public class GameState {
     }
 
     public static GameState getDefault() {
-        return new GameState(new Board(new BeginnerLevel()), 0, 0);
+        return new GameState(Board.getInstance(new GameLevel(new BeginnerLevel())));
     }
 
     public static GameState fromMemento(GameStateMemento memento) {
-        return memento.getState();
+        return memento.getGameState();
     }
 
     public GameStateMemento toMemento() {

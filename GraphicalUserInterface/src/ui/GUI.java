@@ -9,12 +9,15 @@ import core.numbers.INumber;
 /**
  * Created by hp on 12/12/2015.
  */
-public class UserInterface {
+public class GUI implements Runnable{
 
     SettingsData.Theme theme;
 
-    public UserInterface(SettingsData.Theme theme) {
+    public GUI(SettingsData.Theme theme) {
         this.theme = theme;
+    }
+    public GUI(){
+        theme= SettingsData.Theme.Classic;
     }
 
     public void draw() {
@@ -24,5 +27,11 @@ public class UserInterface {
         ICell cell = cellFactory.getCell(theme);
         ComponentsAbstractFactory numberFactory = ComponentFactoryProducer.getFactory(ComponentFactoryProducer.ComponentFactory.Number);
         INumber number = numberFactory.getNumber(theme);
+    }
+
+    @Override
+    public void run() {
+
+        draw();
     }
 }

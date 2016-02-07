@@ -50,8 +50,17 @@ public class Statistic implements Comparable<Statistic> {
     public int compareTo(Statistic o) {
         if (winNum == o.winNum) {
             if (winPercent == o.winPercent) return 0;
-            return winPercent > o.winPercent ? 1 : -1;
+            return winPercent > o.winPercent ? -1 : 1;
         }
-        return winNum > o.winNum ? 1 : -1;
+        return winNum > o.winNum ? -1 : 1;
+    }
+
+    @Override
+    public String toString() {
+        return "Statistic{" +
+                "winNum=" + winNum +
+                ", playNum=" + playNum +
+                ", winPercent=" + winPercent +
+                '}';
     }
 }

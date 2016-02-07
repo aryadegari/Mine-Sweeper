@@ -1,8 +1,6 @@
 package test;
 
 import data.GameState;
-import junit.framework.Assert;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ui.AccountInfo;
@@ -11,11 +9,10 @@ import ui.Statistic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by hp on 05/02/2016.
@@ -30,13 +27,10 @@ public class AccountManagerTest {
         accountManager = AccountManager.getInstance();
         String username = "username";
         String password = "password";
+        accountManager.clearAllData();
         AccountInfo account = testAccountAdd(username, password);
-        accountManager.setAccountInfo(account);
-    }
 
-    @After
-    public void tearDown() throws Exception {
-        testDeleteAccount();
+        accountManager.setAccountInfo(account);
     }
 
     private AccountInfo testAccountAdd(String username, String password) {
@@ -63,6 +57,7 @@ public class AccountManagerTest {
         assertEquals(actual.password, expected.password);
     }
 
+    @Test
     public void testDeleteAccount() {
 
         boolean success = accountManager.deleteAccount(initialAccount);
@@ -72,8 +67,7 @@ public class AccountManagerTest {
         assertNull(accountInfo);
     }
 
-    @Test
-    public void testGetAllAccountsInfo() {
+    private void testGetAllAccountsInfo() {
 
         String prefix = initialAccount.username;
         int start = 1;
@@ -81,7 +75,9 @@ public class AccountManagerTest {
         List<AccountInfo> accounts = new ArrayList<>();
 
         for (int i = start; i <= end; i++) {
-            accounts.add(testAccountAdd(prefix + i, prefix + i));
+            AccountInfo account = new AccountInfo(prefix + i, prefix + i);
+            accountManager.addAccount(account);
+            accounts.add(account);
         }
         boolean contains = accountManager.getAllAccountsInfo().containsAll(accounts);
         assertTrue(contains);
@@ -100,6 +96,26 @@ public class AccountManagerTest {
         assertEquals(statistic.playNum, 1);
         assertEquals(statistic.winNum, 1);
         assertEquals(statistic.winPercent, 100);
+    }
+
+    @Test
+    public void testAllAccountsStatistic() {
+        testGetAllAccountsInfo();
+        String prefix = initialAccount.username;
+        int start = 1;
+        int end = 20;
+
+        for (int i = start; i <= end; i++) {
+            accountManager.setAccountInfo(new AccountInfo(prefix + i, prefix + i));
+            for (int j = 0; j < i; j++) {
+                accountManager.updateStats(true);
+            }
+        }
+        Map<AccountInfo, Statistic> allAccountStatistics = accountManager.getAllAccountsStatistics();
+        for (AccountInfo accountInfo : allAccountStatistics.keySet()) {
+            System.out.println(accountInfo + " : " + allAccountStatistics.get(accountInfo));
+        }
+
     }
 
     @Test

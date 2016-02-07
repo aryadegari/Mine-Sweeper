@@ -9,6 +9,7 @@ import utils.MapUtil;
 
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 /**
@@ -168,5 +169,16 @@ public class AccountManager {
         statistic.reset();
         saveStatistic();
         return statistic;
+    }
+
+    public void clearAllData() {
+        Preferences prefs = getPreferences();
+        try {
+            prefs.clear();
+        } catch (BackingStoreException e) {
+            System.out.println("AccountManager.clearAllData:  Cannot Clear All Data");
+            e.printStackTrace();
+
+        }
     }
 }

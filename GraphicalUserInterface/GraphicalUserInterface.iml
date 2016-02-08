@@ -18,5 +18,6 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="SettingsManager" />
+    <orderEntry type="module" module-name="AccountManager" />
   </component>
 </module>

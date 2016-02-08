@@ -10,4 +10,9 @@ public class IntermediateLevel extends LevelBase {
         this.cols = 16;
         this.mines = 40;
     }
+
+    @Override
+    public String toString() {
+        return "IntermediateLevel{} " + super.toString();
+    }
 }

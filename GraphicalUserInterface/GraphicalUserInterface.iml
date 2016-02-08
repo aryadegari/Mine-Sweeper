@@ -19,5 +19,6 @@
     </orderEntry>
     <orderEntry type="module" module-name="SettingsManager" />
     <orderEntry type="module" module-name="AccountManager" />
+    <orderEntry type="module" module-name="Common" />
   </component>
 </module>

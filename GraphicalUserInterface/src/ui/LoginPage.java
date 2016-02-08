@@ -1,9 +1,9 @@
 package ui;
 
+import utils.Consts;
 import utils.ScreenUtils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -16,7 +16,6 @@ import static org.testng.AssertJUnit.assertEquals;
 public class LoginPage {
 
     private static final int MINIMUM_USER_PASS_LENGTH = 3;
-    private static final Color errorColor = Color.RED;
     private static final String USERNAME_REGISTER_ERROR_MESSAGE = "Username must be at least " + MINIMUM_USER_PASS_LENGTH + " characters !";
     private static final String PASSWORD_REGISTER_ERROR_MESSAGE = "Password must be at least " + MINIMUM_USER_PASS_LENGTH + " characters !";
     private static final String PASSWORD_LOGIN_ERROR_MESSAGE = "Password incorrect !";
@@ -41,13 +40,13 @@ public class LoginPage {
                     boolean mustReturn = false;
                     if (usernameTextField.getText().length() < MINIMUM_USER_PASS_LENGTH) {
                         usernameError.setText(USERNAME_REGISTER_ERROR_MESSAGE);
-                        usernameError.setForeground(errorColor);
+                        usernameError.setForeground(Consts.ERROR_COLOR);
                         usernameError.setVisible(true);
                         mustReturn = true;
                     }
                     if (passwordTextField.getPassword().length < MINIMUM_USER_PASS_LENGTH) {
                         passwordError.setText(PASSWORD_REGISTER_ERROR_MESSAGE);
-                        passwordError.setForeground(errorColor);
+                        passwordError.setForeground(Consts.ERROR_COLOR);
                         passwordError.setVisible(true);
                         mustReturn = true;
                     }
@@ -63,7 +62,7 @@ public class LoginPage {
                     login(accountInfo);
                 } else {
                     passwordError.setText(PASSWORD_LOGIN_ERROR_MESSAGE);
-                    passwordError.setForeground(errorColor);
+                    passwordError.setForeground(Consts.ERROR_COLOR);
                     passwordError.setVisible(true);
                 }
 

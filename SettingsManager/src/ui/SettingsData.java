@@ -13,10 +13,10 @@ import java.util.prefs.Preferences;
 public class SettingsData {
 
     private static final String SETTINGS_PREFIX = "settings_data_";
-    private static final String LANGUAGE_KEY = SETTINGS_PREFIX + "language_key";
-    private static final String SOUND_KEY = SETTINGS_PREFIX + "sound_key";
-    private static final String GAME_LEVEL_KEY = SETTINGS_PREFIX + "game_level_key";
-    private static final String THEME_KEY = SETTINGS_PREFIX + "theme_key";
+    private static final String LANGUAGE_KEY = SETTINGS_PREFIX + "language_key_";
+    private static final String SOUND_KEY = SETTINGS_PREFIX + "sound_key_";
+    private static final String GAME_LEVEL_KEY = SETTINGS_PREFIX + "game_level_key_";
+    private static final String THEME_KEY = SETTINGS_PREFIX + "theme_key_";
 
     public Language language = Language.En;
     public boolean sound = false;
@@ -41,10 +41,16 @@ public class SettingsData {
     public static SettingsData load() {
         SettingsData settings = new SettingsData();
         Preferences prefs = getPreferences();
-        settings.language = Language.values()[prefs.getInt(LANGUAGE_KEY, settings.language.ordinal())];
-        settings.sound = prefs.getBoolean(SOUND_KEY, settings.sound);
-        settings.gameLevel = new Gson().fromJson(prefs.get(GAME_LEVEL_KEY, new Gson().toJson(settings.gameLevel)), GameLevel.class);
-        settings.language = Language.values()[prefs.getInt(LANGUAGE_KEY, settings.language.ordinal())];
+        AccountInfo accountInfo = AccountManager.getInstance().getAccountInfo();
+        if (accountInfo == null) {
+            System.out.println("SettingsData.save : no account set! don't save.");
+            return settings;
+        }
+        String username = accountInfo.username;
+        settings.language = Language.values()[prefs.getInt(LANGUAGE_KEY + username, settings.language.ordinal())];
+        settings.sound = prefs.getBoolean(SOUND_KEY + username, settings.sound);
+        settings.gameLevel = GameLevel.fromJson(prefs.get(GAME_LEVEL_KEY + username, new Gson().toJson(settings.gameLevel)));
+        settings.theme = Theme.values()[prefs.getInt(THEME_KEY + username, settings.theme.ordinal())];
 
         return settings;
     }
@@ -58,10 +64,16 @@ public class SettingsData {
 
     public void save() {
         Preferences prefs = getPreferences();
-        prefs.putInt(LANGUAGE_KEY, language.ordinal());
-        prefs.putBoolean(SOUND_KEY, sound);
-        prefs.put(GAME_LEVEL_KEY, new Gson().toJson(gameLevel));
-        prefs.putInt(THEME_KEY, theme.ordinal());
+        AccountInfo accountInfo = AccountManager.getInstance().getAccountInfo();
+        if (accountInfo == null) {
+            System.out.println("SettingsData.save : no account set! don't save.");
+            return;
+        }
+        String username = accountInfo.username;
+        prefs.putInt(LANGUAGE_KEY + username, language.ordinal());
+        prefs.putBoolean(SOUND_KEY + username, sound);
+        prefs.put(GAME_LEVEL_KEY + username, new Gson().toJson(gameLevel));
+        prefs.putInt(THEME_KEY + username, theme.ordinal());
     }
 
     @Override
@@ -87,7 +99,44 @@ public class SettingsData {
                 '}';
     }
 
-    public enum Language {En, Fa}
+    public enum Language {
 
-    public enum Theme {Modern, Classic, Cartoon}
+        En("English"), Fa("Persian");
+
+        private String languageText;
+
+        Language(String languageText) {
+            this.languageText = languageText;
+        }
+
+        @Override
+        public String toString() {
+            return languageText;
+        }
+
+        public String[] getItems() {
+            String[] items = new String[values().length];
+            int index = 0;
+            for (Language item : Language.values()) {
+                items[index] = item.toString();
+                index++;
+            }
+            return items;
+        }
+    }
+
+    public enum Theme {
+
+        Modern, Classic, Cartoon;
+
+        public static String[] getItems() {
+            String[] items = new String[values().length];
+            int index = 0;
+            for (Theme item : Theme.values()) {
+                items[index] = item.toString();
+                index++;
+            }
+            return items;
+        }
+    }
 }

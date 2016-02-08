@@ -31,6 +31,7 @@
             <properties>
               <columns value="15"/>
               <horizontalAlignment value="10"/>
+              <text value="guest"/>
             </properties>
           </component>
         </children>
@@ -52,7 +53,7 @@
             <constraints/>
             <properties>
               <columns value="15"/>
-              <text value=""/>
+              <text value="guest"/>
             </properties>
           </component>
         </children>

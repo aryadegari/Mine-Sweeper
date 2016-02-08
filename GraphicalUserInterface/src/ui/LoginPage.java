@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 /**
  * Created by hp on 07/02/2016.
  */
@@ -57,7 +59,7 @@ public class LoginPage {
                     accountManager.addAccount(newAccount);
                     login(newAccount);
 
-                } else if (Arrays.toString(passwordTextField.getPassword()).equals(accountInfo.password)) {
+                } else if (new String(passwordTextField.getPassword()).equals(accountInfo.password)) {
                     login(accountInfo);
                 } else {
                     passwordError.setText(PASSWORD_LOGIN_ERROR_MESSAGE);
@@ -69,13 +71,6 @@ public class LoginPage {
         });
     }
 
-    private void login(AccountInfo accountInfo) {
-        AccountManager accountManager = AccountManager.getInstance();
-        accountManager.setAccountInfo(accountInfo);
-        frame.dispose();
-        // user logged in -> open game windows
-    }
-
     public static void main(String[] args) {
         frame = new JFrame("Login");
         frame.setContentPane(new LoginPage().panel1);
@@ -84,6 +79,13 @@ public class LoginPage {
         ScreenUtils.setCenterLocation(frame);
         frame.setVisible(true);
 
+    }
+
+    private void login(AccountInfo accountInfo) {
+        AccountManager accountManager = AccountManager.getInstance();
+        accountManager.setAccountInfo(accountInfo);
+        frame.dispose();
+        // user logged in -> open game windows
     }
 
 }

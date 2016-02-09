@@ -2,6 +2,7 @@ package ui;
 
 import core.ComponentFactoryProducer;
 import core.ComponentsAbstractFactory;
+import core.Game;
 import core.buttons.IButton;
 import core.cells.ICell;
 import core.numbers.INumber;
@@ -15,9 +16,11 @@ public class GUI implements Runnable{
 
     public GUI(SettingsData.Theme theme) {
         this.theme = theme;
+        Game gameFrame=new Game();
     }
     public GUI(){
         theme= SettingsData.Theme.Classic;
+        Game gameFrame=new Game();
     }
 
     public void draw() {
@@ -34,4 +37,10 @@ public class GUI implements Runnable{
 
         draw();
     }
+
+    public static void main(String[] args) {
+        new Thread(new GUI()).start();
+    }
+
+
 }

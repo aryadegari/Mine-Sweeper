@@ -1,5 +1,6 @@
 package test;
 
+import core.Game;
 import org.junit.Test;
 import ui.GUI;
 
@@ -10,6 +11,7 @@ public class GUITest {
 
     @Test
     public void GUITest(){
-        new Thread(new GUI()).start();
+        Game gameFrame=new Game();
+//        new Thread(new GUI()).start();
     }
 }

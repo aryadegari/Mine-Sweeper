@@ -7,6 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="Common" />
     <orderEntry type="module" module-name="SettingsManager" />
     <orderEntry type="module-library">
       <library name="JUnit4">
@@ -18,5 +19,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="AccountManager" />
   </component>
 </module>

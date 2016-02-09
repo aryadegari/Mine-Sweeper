@@ -1,5 +1,7 @@
 package data;
 
+import utils.Consts;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -78,11 +80,16 @@ public class Board {
         return cells.get(i).get(j);
     }
 
-    public void openCell(int row, int col) {
+    public Consts.GameStatus openCell(int row, int col) {
         if (getCell(row, col).getState() == CellState.OPEN)
-            return;
+            return Consts.GameStatus.PLAY;
         getCell(row, col).open();
         openRelatedCells(row, col);
+        if(getCell(row, col) instanceof MineCell)
+            return Consts.GameStatus.GAMEOVER;
+        if(win())
+            return Consts.GameStatus.WIN;
+        return Consts.GameStatus.PLAY;
     }
 
     public void markCell(int row, int col) {
@@ -128,5 +135,14 @@ public class Board {
                 ", mines=" + mines +
                 ", minesPos=" + minesPos +
                 '}';
+    }
+
+    private boolean win(){
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++)
+                if((getCell(i,j) instanceof NumCell)||(getCell(i, j) instanceof EmptyCell))
+                    if(getCell(i, j).getState()==CellState.CLOSE)
+                        return false;
+        return true;
     }
 }

@@ -85,9 +85,9 @@ public class Board {
             return Consts.GameStatus.PLAY;
         getCell(row, col).open();
         openRelatedCells(row, col);
-        if(getCell(row, col) instanceof MineCell)
+        if (getCell(row, col) instanceof MineCell)
             return Consts.GameStatus.GAMEOVER;
-        if(win())
+        if (win())
             return Consts.GameStatus.WIN;
         return Consts.GameStatus.PLAY;
     }
@@ -104,8 +104,8 @@ public class Board {
         else if (getCell(row, col) instanceof EmptyCell) {
             for (int k = 0; k < neighbours(row, col).size(); k++) {
                 Point neighbour = neighbours(row, col).get(k);
-                if ((Math.abs(neighbour.x - row) + Math.abs(neighbour.y - col)) < 2)
-                    if (getCell(neighbour.x, neighbour.y) instanceof EmptyCell) {
+                if ((getCell(neighbour.x, neighbour.y) instanceof NumCell) || (Math.abs(neighbour.x - row) + Math.abs(neighbour.y - col)) < 2)
+                    if (!(getCell(neighbour.x, neighbour.y) instanceof MineCell)) {
                         openCell(neighbour.x, neighbour.y);
                     }
             }
@@ -137,11 +137,11 @@ public class Board {
                 '}';
     }
 
-    private boolean win(){
+    private boolean win() {
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < cols; j++)
-                if((getCell(i,j) instanceof NumCell)||(getCell(i, j) instanceof EmptyCell))
-                    if(getCell(i, j).getState()==CellState.CLOSE)
+                if ((getCell(i, j) instanceof NumCell) || (getCell(i, j) instanceof EmptyCell))
+                    if (getCell(i, j).getState() == CellState.CLOSE)
                         return false;
         return true;
     }

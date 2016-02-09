@@ -49,15 +49,15 @@ class GameFrame
     public GameFrame(AccountInfo accountInfo, SettingsData settingsData) {
 //        this.rows=settingsData.gameLevel.level.rows;
 //        this.cols=settingsData.gameLevel.level.cols;
-        rows = 9;
-        cols = 9;
-        buttons=new MyButton[rows][cols];
+        rows = 8;
+        cols = 8;
+        buttons = new MyButton[rows][cols];
 //        w=getFrameDimension(settingsData.gameLevel).width;
 //        h=getFrameDimension(settingsData.gameLevel).height;
         w = getFrameDimension(new GameLevel(new BeginnerLevel())).width;
         h = getFrameDimension(new GameLevel(new BeginnerLevel())).height;
 //        board= Board.getInstance(settingsData.gameLevel);
-        board = Board.getInstance(new GameLevel(new ExpertLevel()));
+        board = Board.getInstance(new GameLevel(new BeginnerLevel()));
         boardPW = w - LRMargin;
         boardPH = h - UDMargin;
         gameState = new GameState(Board.getInstance(settingsData.gameLevel));
@@ -77,7 +77,7 @@ class GameFrame
         mainPanel.setSize(getWidth(), getHeight());
 //        getContentPane().add(mainPanel);
         boardPanel = new JPanel();
-        repaint();
+        paintCells();
 
         // Create the menu bar
         menuBar = new JMenuBar();
@@ -137,19 +137,19 @@ class GameFrame
         System.out.println("gameOver");
     }
 
-    public void repaint() {
-//        boardPanel.removeAll();
+    public void paintCells() {
         boardPanel.setSize(boardPW, boardPH);
         boardPanel.setLocation(Consts.getCenterPos(w, boardPW), 25);
         boardPanel.setLayout(new GridLayout(rows, cols));
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                MyButton button = new MyButton(i, j, board.getCell(i, j));
+                buttons[i][j] = new MyButton(i, j, board.getCell(i, j));
+                final int a = i, b = j;
                 MouseAdapter mouseAdapter = new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         if (SwingUtilities.isLeftMouseButton(e)) {
-                            Consts.GameStatus gameStatus = board.openCell(button.row, button.col);
+                            Consts.GameStatus gameStatus = board.openCell(buttons[a][b].row, buttons[a][b].col);
                             switch (gameStatus) {
                                 case WIN:
                                     win();
@@ -161,17 +161,56 @@ class GameFrame
                                     break;
                             }
                         } else {
-                            board.markCell(button.row, button.col);
+                            if (board.getCell(a, b).getState() == CellState.MARKED)
+                                board.getCell(a, b).setState(CellState.CLOSE);
+                            else
+                                board.markCell(buttons[a][b].row, buttons[a][b].col);
                         }
-                        repaint();
+                        cellClicked();
                     }
                 };
-                button.addMouseListener(mouseAdapter);
-                boardPanel.add(button);
+                buttons[i][j].addMouseListener(mouseAdapter);
+                boardPanel.add(buttons[i][j]);
             }
         }
         mainPanel.add(boardPanel);
         getContentPane().add(mainPanel);
+    }
+
+    void cellClicked() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (board.getCell(i, j).getState() != CellState.CLOSE) {
+                    String address = "";
+                    if (board.getCell(i, j).getState() == CellState.OPEN) {
+                        String state = board.getCell(i, j).getClass().getSimpleName();
+                        switch (state) {
+                            case "MineCell":
+                                address = "../resources/1.png";
+                                break;
+                            case "EmptyCell":
+                                address = "../resources/empty.png";
+                                break;
+                            case "NumCell":
+                                address = "../resources/number_" + (((NumCell) board.getCell(i, j)).getNeighbourMines()) + ".png";
+                                break;
+                            default:
+                                break;
+                        }
+                    } else {
+                        address = "../resources/flag.png";
+                    }
+                    java.net.URL imgURL = getClass().getResource(address);
+                    if (imgURL != null) {
+                        buttons[i][j].setIcon(new ImageIcon(imgURL));
+                    } else {
+                        System.err.println("Couldn't find file: " + address);
+                    }
+                } else {
+                    buttons[i][j].setIcon(null);
+                }
+            }
+        }
     }
 
     public JMenuItem CreateMenuItem(JMenu menu, int iType, String sText,

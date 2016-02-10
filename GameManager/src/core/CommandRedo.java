@@ -17,6 +17,6 @@ public class CommandRedo extends CommandBase {
 
     @Override
     public void execute() {
-        gameState.setGameState(careTaker.redo().getGameState());
+        gameState.setGameState((careTaker.redo()).getGameState());
     }
 }

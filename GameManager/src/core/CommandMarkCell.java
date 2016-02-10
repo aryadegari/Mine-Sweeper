@@ -25,10 +25,12 @@ public class CommandMarkCell extends CommandBase {
     @Override
     public void execute() {
         if (row != -1 && col != -1) {
-            if (gameState.getBoard().getCell(row, col).getState() == CellState.CLOSE) {
+            if (gameState.getBoard().getCell(row, col).getState() != CellState.OPEN) {
                 careTaker.add(new GameStateMemento(gameState));
-                gameState.getBoard().markCell(row, col);
-                gameState.increaseMoves();
+                if (gameState.getBoard().getCell(row, col).getState() == CellState.CLOSE)
+                    gameState.getBoard().markCell(row, col);
+                else
+                    gameState.getBoard().getCell(row, col).setState(CellState.CLOSE);
             }
         } else
             System.err.println("Please set cursor position!!!");

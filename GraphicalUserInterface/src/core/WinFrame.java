@@ -25,9 +25,11 @@ public class WinFrame extends JFrame {
 //        } else {
 //            System.err.println("Couldn't find file: " + "../resources/"+text+".png");
 //        }
-        JLabel img=new JLabel(new ImageIcon("../resources/"+text+".png"));
-        img.setSize(50,50);
+        JLabel img=new JLabel();
+        img.setIcon(new ImageIcon("../resources/"+text+".png"));
+        img.setSize(100,100);
         img.setLocation(50, 50);
+        img.setVisible(true);
         add(img);
         setResizable(false);
         JButton restart=new JButton("Restart");

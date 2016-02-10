@@ -1,9 +1,7 @@
 package core;
 
-import core.menus.GameMenu;
-import core.menus.HelpMenu;
-import core.menus.UsernameMenu;
 import utils.Consts;
+import utils.UserInterfaceConsts;
 
 import javax.swing.*;
 
@@ -36,7 +34,7 @@ public class GameMenuBar extends JMenuBar {
     JMenu getSimpleMenu(String name, char mnemonicChar, int position){
         JMenu simpleMenu=new JMenu(name);
         simpleMenu.setSize(Consts.MENU_NAME_W, Consts.MENU_NAME_H);
-        simpleMenu.setLocation(position*Consts.MENU_NAME_W,0);
+        simpleMenu.setLocation(position* Consts.MENU_NAME_W,0);
         simpleMenu.setLayout(null);
         simpleMenu.setMnemonic(mnemonicChar);
 

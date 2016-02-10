@@ -1,6 +1,6 @@
 package ui;
 
-import utils.Consts;
+import utils.UserInterfaceConsts;
 import utils.ScreenUtils;
 
 import javax.swing.*;
@@ -40,13 +40,13 @@ public class LoginPage {
                     boolean mustReturn = false;
                     if (usernameTextField.getText().length() < MINIMUM_USER_PASS_LENGTH) {
                         usernameError.setText(USERNAME_REGISTER_ERROR_MESSAGE);
-                        usernameError.setForeground(Consts.ERROR_COLOR);
+                        usernameError.setForeground(UserInterfaceConsts.ERROR_COLOR);
                         usernameError.setVisible(true);
                         mustReturn = true;
                     }
                     if (passwordTextField.getPassword().length < MINIMUM_USER_PASS_LENGTH) {
                         passwordError.setText(PASSWORD_REGISTER_ERROR_MESSAGE);
-                        passwordError.setForeground(Consts.ERROR_COLOR);
+                        passwordError.setForeground(UserInterfaceConsts.ERROR_COLOR);
                         passwordError.setVisible(true);
                         mustReturn = true;
                     }
@@ -62,7 +62,7 @@ public class LoginPage {
                     login(accountInfo);
                 } else {
                     passwordError.setText(PASSWORD_LOGIN_ERROR_MESSAGE);
-                    passwordError.setForeground(Consts.ERROR_COLOR);
+                    passwordError.setForeground(UserInterfaceConsts.ERROR_COLOR);
                     passwordError.setVisible(true);
                 }
 

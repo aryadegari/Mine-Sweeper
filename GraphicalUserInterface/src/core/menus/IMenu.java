@@ -1,6 +1,7 @@
 package core.menus;
 
 import utils.Consts;
+import utils.UserInterfaceConsts;
 
 import javax.swing.*;
 
@@ -13,7 +14,7 @@ public abstract class IMenu extends JMenu {
     char mnemonicChar;
     protected void construct(){
         setSize(Consts.MENU_NAME_W, Consts.MENU_NAME_H);
-        setLocation(position*Consts.MENU_NAME_W,0);
+        setLocation(position* Consts.MENU_NAME_W,0);
         setLayout(null);
         setMnemonic(mnemonicChar);
     }

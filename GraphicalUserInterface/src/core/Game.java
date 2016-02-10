@@ -1,6 +1,7 @@
 package core;
 
 import utils.Consts;
+import utils.UserInterfaceConsts;
 
 import javax.swing.*;
 import java.awt.*;

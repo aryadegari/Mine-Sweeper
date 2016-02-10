@@ -12,6 +12,8 @@ public class Consts {
     public static enum GameStatus{
         WIN, GAMEOVER, PLAY
     }
+
+    public static GameStatus gameStatus=GameStatus.PLAY;
     public static final String SETTINGS_FILE_PATH = "settings.dat";
     public static final String LANGUAGES_BUNDLE_NAME = "languages";
     public static final String ACCOUNTS_GUEST_USER_NAME= "guest";

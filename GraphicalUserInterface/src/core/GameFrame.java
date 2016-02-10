@@ -5,12 +5,12 @@ import ui.AccountInfo;
 import ui.SettingsData;
 import utils.Consts;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
 import javax.swing.*;
-
-import static utils.Consts.getFrameDimension;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 class GameFrame
         extends JFrame
@@ -43,6 +43,13 @@ class GameFrame
     private AccountInfo accountInfo;
     private GameState gameState;
     private Board board;
+    private CareTaker careTaker;
+    private CommandExit cmExit;
+    private CommandMarkCell cmMarkCell;
+    private CommandOpenCell cmOpenCell;
+    private CommandRedo cmRedo;
+    private CommandUndo cmUndo;
+    private CommandResetGame cmResetGame;
 
     private MyButton[][] buttons;
 
@@ -54,8 +61,8 @@ class GameFrame
         buttons = new MyButton[rows][cols];
 //        w=getFrameDimension(settingsData.gameLevel).width;
 //        h=getFrameDimension(settingsData.gameLevel).height;
-        w = getFrameDimension(new GameLevel(new BeginnerLevel())).width;
-        h = getFrameDimension(new GameLevel(new BeginnerLevel())).height;
+        w = Consts.getFrameDimension(new GameLevel(new BeginnerLevel())).width;
+        h = Consts.getFrameDimension(new GameLevel(new BeginnerLevel())).height;
 //        board= Board.getInstance(settingsData.gameLevel);
         board = Board.getInstance(new GameLevel(new BeginnerLevel()));
         boardPW = w - LRMargin;
@@ -63,6 +70,7 @@ class GameFrame
         gameState = new GameState(Board.getInstance(settingsData.gameLevel));
         this.accountInfo = accountInfo;
         this.settingsData = settingsData;
+        careTaker=new CareTaker(gameState);
         createFrame();
     }
 
@@ -79,62 +87,28 @@ class GameFrame
         boardPanel = new JPanel();
         paintCells();
 
-        // Create the menu bar
         menuBar = new JMenuBar();
 
-        // Set this instance as the application's menu bar
         setJMenuBar(menuBar);
 
-        // Build the property sub-menu
         menuUsername = new JMenu("Username");
         menuUsername.setMnemonic('u');
         menuGame = new JMenu("Game");
         menuGame.setMnemonic('g');
-        menuBar.add(menuGame);
+        setGameMenu();
+        setHelpMenu();
+        setUserMenu();
 
-        // Create property items
-        menuGameNewGame = CreateMenuItem(menuGame, ITEM_PLAIN,
-                "NewGame", null, 'n', null);
-        menuGame.addSeparator();
-        menuGameStats = CreateMenuItem(menuGame, ITEM_PLAIN,
-                "Statistics", null, 's', null);
-        menuGameOptions = CreateMenuItem(menuGame, ITEM_PLAIN,
-                "Options", null, 'o', null);
-        menuGameAppearance = CreateMenuItem(menuGame, ITEM_PLAIN,
-                "Change Appearance", null, 'c', null);
-        menuGame.addSeparator();
-        menuGameExit = CreateMenuItem(menuGame, ITEM_PLAIN,
-                "Exit", null, 'e', null);
-
-
-        // Create the file menu
-        menuHelp = new JMenu("Help");
-        menuHelp.setMnemonic('h');
-        menuHelpViewHelp = CreateMenuItem(menuHelp, ITEM_PLAIN,
-                "View Help", null, 'a',
-                "Cut data to the clipboard");
-        menuHelpAboutUs = CreateMenuItem(menuHelp, ITEM_PLAIN,
-                "About us", null, 'v',
-                "Cut data to the clipboard");
-        menuBar.add(menuHelp);
-
-        // Create edit menu options
-        menuUsernameLogout = CreateMenuItem(menuUsername, ITEM_PLAIN,
-                "Change password", null, 'u',
-                "Paste data from the clipboard");
-        menuUsername.addSeparator();
-        menuUsernameChangePass = CreateMenuItem(menuUsername, ITEM_PLAIN,
-                "Logout", null, 'l',
-                "Cut data to the clipboard");
-        menuBar.add(menuUsername);
     }
 
     void win() {
-        System.out.println("win");
+        new WinFrame("You win");
+        Consts.gameStatus= Consts.GameStatus.WIN;
     }
 
     void gameOver() {
-        System.out.println("gameOver");
+        new WinFrame("Gameover");
+        Consts.gameStatus= Consts.GameStatus.GAMEOVER;
     }
 
     public void paintCells() {
@@ -148,24 +122,25 @@ class GameFrame
                 MouseAdapter mouseAdapter = new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        if (SwingUtilities.isLeftMouseButton(e)) {
-                            Consts.GameStatus gameStatus = board.openCell(buttons[a][b].row, buttons[a][b].col);
-                            switch (gameStatus) {
-                                case WIN:
-                                    win();
-                                    break;
-                                case GAMEOVER:
-                                    gameOver();
-                                    break;
-                                default:
-                                    break;
+                        if (Consts.gameStatus==Consts.GameStatus.PLAY)
+                            if (SwingUtilities.isLeftMouseButton(e)) {
+                                Consts.GameStatus gameStatus = board.openCell(buttons[a][b].row, buttons[a][b].col);
+                                switch (gameStatus) {
+                                    case WIN:
+                                        win();
+                                        break;
+                                    case GAMEOVER:
+                                        gameOver();
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            } else {
+                                if (board.getCell(a, b).getState() == CellState.MARKED)
+                                    board.getCell(a, b).setState(CellState.CLOSE);
+                                else
+                                    board.markCell(buttons[a][b].row, buttons[a][b].col);
                             }
-                        } else {
-                            if (board.getCell(a, b).getState() == CellState.MARKED)
-                                board.getCell(a, b).setState(CellState.CLOSE);
-                            else
-                                board.markCell(buttons[a][b].row, buttons[a][b].col);
-                        }
                         cellClicked();
                     }
                 };
@@ -247,6 +222,82 @@ class GameFrame
         System.out.println(event);
     }
 
+    void setGameMenu() {
+
+
+        menuBar.add(menuGame);
+
+        menuGameNewGame = CreateMenuItem(menuGame, ITEM_PLAIN,
+                "NewGame", null, 'n', null);
+        menuGame.addSeparator();
+        menuGameStats = CreateMenuItem(menuGame, ITEM_PLAIN,
+                "Statistics", null, 's', null);
+        menuGameOptions = CreateMenuItem(menuGame, ITEM_PLAIN,
+                "Options", null, 'o', null);
+        menuGameAppearance = CreateMenuItem(menuGame, ITEM_PLAIN,
+                "Change Appearance", null, 'c', null);
+        menuGame.addSeparator();
+        menuGameExit = CreateMenuItem(menuGame, ITEM_PLAIN,
+                "Exit", null, 'e', null);
+    }
+
+    void setHelpMenu(){
+        menuHelp = new JMenu("Help");
+        menuHelp.setMnemonic('h');
+        menuHelpViewHelp = CreateMenuItem(menuHelp, ITEM_PLAIN,
+                "View Help", null, 'a',
+                "");
+        menuHelpAboutUs = CreateMenuItem(menuHelp, ITEM_PLAIN,
+                "About us", null, 'v',
+                "");
+        menuBar.add(menuHelp);
+    }
+
+    void setUserMenu(){
+        menuUsernameLogout = CreateMenuItem(menuUsername, ITEM_PLAIN,
+                "Change password", null, 'u',
+                "");
+        menuUsername.addSeparator();
+        menuUsernameChangePass = CreateMenuItem(menuUsername, ITEM_PLAIN,
+                "Logout", null, 'l',
+                "");
+        menuBar.add(menuUsername);
+    }
+
+    void setLabels() {
+        JLabel timeL=new JLabel("0");
+        timeL.setSize(70, 20);
+        timeL.setLocation(0,0);
+        timeL.setLayout(null);
+        getContentPane().add(timeL);
+        JLabel movesL=new JLabel("0");
+        movesL.setSize(70, 20);
+        movesL.setLocation(70,0);
+        movesL.setLayout(null);
+        getContentPane().add(movesL);
+        JButton undo=new JButton();
+        undo.setSize(70, 20);
+        undo.setLocation(140,0);
+        undo.setLayout(null);
+        undo.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+        });
+        getContentPane().add(undo);
+        JButton redo=new JButton();
+        redo.setSize(70, 20);
+        redo.setLocation(210,0);
+        redo.setLayout(null);
+        redo.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+        });
+        getContentPane().add(redo);
+    }
 
     public static void main(String args[]) {
         // Create an instance of the test application

@@ -1,7 +1,5 @@
 package core.menus;
 
-import utils.Consts;
-
 import javax.swing.*;
 
 /**

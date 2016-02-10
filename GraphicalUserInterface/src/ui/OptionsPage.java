@@ -2,7 +2,7 @@ package ui;
 
 import data.*;
 import javafx.util.Pair;
-import utils.Consts;
+import utils.UserInterfaceConsts;
 import utils.ScreenUtils;
 
 import javax.swing.*;
@@ -196,8 +196,8 @@ public class OptionsPage {
     }
 
     private void alertCustomTextField(JTextField textField, JLabel label) {
-        textField.setForeground(Consts.ERROR_COLOR);
-        label.setForeground(Consts.ERROR_COLOR);
+        textField.setForeground(UserInterfaceConsts.ERROR_COLOR);
+        label.setForeground(UserInterfaceConsts.ERROR_COLOR);
     }
 
     private void resetCustomLabels() {

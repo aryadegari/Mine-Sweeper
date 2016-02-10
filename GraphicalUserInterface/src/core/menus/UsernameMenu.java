@@ -1,8 +1,5 @@
 package core.menus;
 
-import utils.Consts;
-
-import javax.jws.soap.SOAPBinding;
 import javax.swing.*;
 
 /**

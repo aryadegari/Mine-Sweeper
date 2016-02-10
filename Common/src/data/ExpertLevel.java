@@ -10,4 +10,9 @@ public class ExpertLevel extends LevelBase {
         this.cols = 31;
         this.mines = 99;
     }
+
+    @Override
+    public String toString() {
+        return "ExpertLevel{} " + super.toString();
+    }
 }

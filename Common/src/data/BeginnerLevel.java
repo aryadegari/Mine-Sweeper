@@ -10,4 +10,9 @@ public class BeginnerLevel extends LevelBase {
         this.cols = 8;
         this.mines = 10;
     }
+
+    @Override
+    public String toString() {
+        return "BeginnerLevel{} " + super.toString();
+    }
 }

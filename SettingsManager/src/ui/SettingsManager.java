@@ -15,7 +15,7 @@ public class SettingsManager {
         return ourInstance;
     }
 
-    public void save(SettingsData settingsData) throws Exception {
+    public void save(SettingsData settingsData) {
 
         if (settingsData == null || settingsData.equals(SettingsManager.settingsData)) return;
         settingsData.save();
@@ -28,6 +28,7 @@ public class SettingsManager {
                 settingsData = SettingsData.load();
             } catch (Exception e) {
                 System.out.println("SettingsManager.load : Cannot load Settings Data");
+                e.printStackTrace();
                 settingsData = new SettingsData();
             }
         }

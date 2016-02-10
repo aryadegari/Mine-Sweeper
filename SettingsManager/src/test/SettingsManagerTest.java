@@ -1,7 +1,11 @@
 package test;
 
-import org.junit.Test;
 import data.GameLevel;
+import data.IntermediateLevel;
+import org.junit.Before;
+import org.junit.Test;
+import ui.AccountInfo;
+import ui.AccountManager;
 import ui.SettingsData;
 import ui.SettingsManager;
 
@@ -14,11 +18,16 @@ import static junit.framework.TestCase.assertEquals;
  */
 public class SettingsManagerTest {
 
+    @Before
+    public void setUp() throws Exception {
+        AccountManager.getInstance().setAccountInfo(new AccountInfo("guest", "guest"));
+    }
+
     @Test
     public void saveLoadInitialTest() {
 
         SettingsManager settingsManager = SettingsManager.getInstance();
-        SettingsData settings = new SettingsData();
+        SettingsData settings = new SettingsData(SettingsData.Language.Fa, true, new GameLevel(new IntermediateLevel()), SettingsData.Theme.Modern);
 
         try {
             settingsManager.save(settings);

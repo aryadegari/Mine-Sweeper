@@ -52,6 +52,10 @@ public class AccountManager {
         return new Gson().fromJson(prefs.get(ACCOUNTS_ACCOUNT_PREFIX + username, null), AccountInfo.class);
     }
 
+    public AccountInfo getAccountInfo() {
+        return accountInfo;
+    }
+
     public void setAccountInfo(AccountInfo accountInfo) {
         if (accountInfo == null || getAccountInfo(accountInfo.username) == null) {
             System.out.println("AccountManager.setAccountInfo account is null or not exists! " + accountInfo);
